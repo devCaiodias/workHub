@@ -1,0 +1,38 @@
+import { Project } from "src/project/entities/project.entity";
+import { Column, CreateDateColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+
+export enum TaskStatus {
+    PENDENTE = 'PENDENTE',
+    EM_ANDAMENTO = 'EM_ANDAMENTO',
+    CONCLUIDA = 'CONCLUIDA',
+}
+
+export class Task {
+    @PrimaryGeneratedColumn()
+    id: number
+
+    @Column()
+    title: string
+
+    @Column({ nullable: true })
+    description?: string
+
+    @Column({
+        type: 'enum',
+        enum: TaskStatus,
+        default: TaskStatus.PENDENTE
+    })
+    status: TaskStatus
+
+    @Column({ type: 'date', nullable: true })
+    dataVencimento?: Date;
+
+    @CreateDateColumn()
+    dateCreate: Date;
+
+    @UpdateDateColumn()
+    dateUpdate: Date
+
+    @ManyToOne(() => Project, (project) => project.tarefas, { onDelete: 'CASCADE' })
+    projeto: Project;
+}
