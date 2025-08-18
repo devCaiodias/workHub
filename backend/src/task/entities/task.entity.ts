@@ -1,5 +1,5 @@
 import { Project } from "src/project/entities/project.entity";
-import { Column, CreateDateColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 export enum TaskStatus {
     PENDENTE = 'PENDENTE',
@@ -7,6 +7,7 @@ export enum TaskStatus {
     CONCLUIDA = 'CONCLUIDA',
 }
 
+@Entity()
 export class Task {
     @PrimaryGeneratedColumn()
     id: number
