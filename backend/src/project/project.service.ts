@@ -22,7 +22,7 @@ export class ProjectService {
 
   async findAll() {
     return await this.projectRepository.find({
-      relations: ['user'],
+      relations: ['tarefas','user'],
       select: {
         id: true,
         name: true,
@@ -31,6 +31,11 @@ export class ProjectService {
           id: true,
           fullname: true,
           email: true
+        },
+        tarefas: {
+          title: true,
+          status: true,
+          dataVencimento: true
         }
       }
     })

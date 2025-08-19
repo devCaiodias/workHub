@@ -23,7 +23,7 @@ export class Task {
         enum: TaskStatus,
         default: TaskStatus.PENDENTE
     })
-    status: TaskStatus
+    status?: TaskStatus
 
     @Column({ type: 'date', nullable: true })
     dataVencimento?: Date;
