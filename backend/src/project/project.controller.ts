@@ -1,34 +1,33 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Request, Param, Delete, UseGuards } from '@nestjs/common';
 import { ProjectService } from './project.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('project')
 export class ProjectController {
-  constructor(private readonly projectService: ProjectService) {}
+  constructor(private readonly projectService: ProjectService) { }
 
-  @Post()
-  create(@Body() createProjectDto: CreateProjectDto) {
-    return this.projectService.create(createProjectDto);
+  @Post('create')
+  @UseGuards(AuthGuard)
+  create(@Body() createProjectDto: CreateProjectDto, @Request() req: any) {
+    return this.projectService.create(createProjectDto, req)
   }
 
-  @Get()
+  @Get('all')
+  @UseGuards(AuthGuard)
   findAll() {
     return this.projectService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.projectService.findOne(+id);
+  @Patch('update/:id')
+  @UseGuards(AuthGuard)
+  update(@Param('id') id: number, @Body() updateProjectDto: UpdateProjectDto) {
+    return this.projectService.update(id, updateProjectDto)
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto) {
-    return this.projectService.update(+id, updateProjectDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.projectService.remove(+id);
+  @Delete('delete/:id')
+  remove(@Param('id') id: number) {
+    return this.projectService.remove(id);
   }
 }

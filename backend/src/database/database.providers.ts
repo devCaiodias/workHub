@@ -3,6 +3,7 @@ import { User } from 'src/users/entities/user.entity';
 import { Project } from 'src/project/entities/project.entity';
 import { Task } from 'src/task/entities/task.entity';
 import * as dotenv from 'dotenv'
+import { Module } from '@nestjs/common';
 
 dotenv.config()
 
