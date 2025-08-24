@@ -1,3 +1,4 @@
+import { IsDate, IsNumber, IsOptional, IsString } from "class-validator";
 
 export enum TaskStatus {
     PENDENTE = 'PENDENTE',
@@ -6,9 +7,20 @@ export enum TaskStatus {
 }
 
 export class CreateTaskDto {
+    @IsString()
     title: string
+
+    @IsString()
+    @IsOptional()
     description?: string
+    
+    @IsOptional()
     status?: TaskStatus
+
+    @IsOptional()
+    @IsDate()
     dataVencimento?: Date;
+
+    @IsNumber()
     projectId: number
 }

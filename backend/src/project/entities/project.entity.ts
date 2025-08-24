@@ -14,7 +14,7 @@ export class Project {
     description?: string
 
     @Column()
-    imgUrl?: string
+    imgUrl: string
 
     @CreateDateColumn()
     dateCreate: Date
