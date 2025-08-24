@@ -1,6 +1,5 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateProjectDto } from './dto/create-project.dto';
-import { UpdateProjectDto } from './dto/update-project.dto';
 import { Project } from './entities/project.entity';
 import { Repository } from 'typeorm';
 
@@ -27,6 +26,7 @@ export class ProjectService {
         id: true,
         name: true,
         description: true,
+        imgUrl: true,
         user: {
           id: true,
           fullname: true,
@@ -34,6 +34,7 @@ export class ProjectService {
         },
         tarefas: {
           title: true,
+          description: true,
           status: true,
           dataVencimento: true
         }

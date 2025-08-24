@@ -13,6 +13,9 @@ export class Project {
     @Column()
     description?: string
 
+    @Column()
+    imgUrl?: string
+
     @CreateDateColumn()
     dateCreate: Date
 
