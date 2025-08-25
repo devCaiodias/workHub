@@ -1,9 +1,9 @@
-import Singup from "@/app/Singup/page";
+import Singin from "@/app/Singin/page";
 
 export default function Home() {
   return (
     <div>
-      <Singup />
+      <Singin />
     </div>
   );
 }
