@@ -4,9 +4,10 @@ import { TaskController } from './task.controller';
 import { TaskProviders } from './task.providers';
 import { DatabaseModule } from 'src/database/database.module';
 import { projectProviders } from 'src/project/project.providers';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, AuthModule],
   controllers: [TaskController],
   providers: [TaskService, ...TaskProviders, ...projectProviders]
 })

@@ -1,41 +1,46 @@
-import { CanActivate, ExecutionContext, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
+import { AuthService } from './auth.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  @Inject()
-  private readonly jwtService: JwtService
+  constructor(private jwtService: JwtService, private authService: AuthService) {}
 
-  async canActivate(
-    context: ExecutionContext,
-  ): Promise<boolean> {
-    const request = context.switchToHttp().getRequest()
-    const authorization = this.extractTokenFromHeader(request)
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const request = context.switchToHttp().getRequest();
+    const token = this.extractTokenFromHeader(request);
 
-    if (!authorization) {
-      throw new UnauthorizedException('Token is required.')
+    if (!token) {
+      throw new UnauthorizedException('Token de autorização não fornecido.');
     }
 
+    // 1. Verifique se o token foi revogado
+    const isRevoked = await this.authService.isTokenRevoked(token);
+    if (isRevoked) {
+      throw new UnauthorizedException('Token inválido ou revogado.');
+    }
+
+    // 2. Verifique a validade do token (expiração, assinatura)
     try {
-      const payload = this.jwtService.verify(authorization, {
-        secret: process.env.SECRET_KEY
-      })
-      request['sub'] = payload
-    } catch (error) {
-      throw new UnauthorizedException('Invalid token')
+      const payload = await this.jwtService.verifyAsync(token, {
+        secret: process.env.SECRET_KEY,
+      });
+      request['user'] = payload;
+    } catch {
+      throw new UnauthorizedException('Token inválido.');
     }
 
-    return true
+    return true;
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
-  const authHeader = request.headers['authorization'];
-  if (!authHeader) return undefined;
-
-  const [type, token] = authHeader.split(' ');
-  if (type?.toLowerCase() !== 'bearer') return undefined;
-
-  return token;
-}
+    const [type, token] = request.headers.authorization?.split(' ') ?? [];
+    return type === 'Bearer' ? token : undefined;
+  }
 }

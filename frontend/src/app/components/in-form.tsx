@@ -1,20 +1,58 @@
+"use client"
+import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
+import * as zod from "zod"
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 
+const SinginSchema = zod.object({
+    email: zod.string().email("Invalid email address"),
+    password: zod.string().min(6, "Password must be at least 6 characters long"),
+})
 
 
 export default function SinginForm() {
+    const router = useRouter()
+
+    const {
+         register: login,
+         handleSubmit,
+         reset,
+         formState: { errors }
+    }  = useForm<zod.infer<typeof SinginSchema>>({
+        resolver: zodResolver(SinginSchema),
+        defaultValues: {
+            email: "",
+            password: "",
+        }
+    })
+
+    const onSubmit = async (data: zod.infer<typeof SinginSchema>) => {
+        try {
+            await axios.post("http://localhost:8080/auth/signin", data, {
+                withCredentials: true,
+            })
+
+            reset()
+            router.push("/Project")
+        } catch (error) {
+            console.error("Error during sign in:", error);
+        }
+    }
+
     return (
-        <form >
+        <form onSubmit={handleSubmit(onSubmit)} >
             <div className="grid gap-6">
                 <div className="grid gap-3">
                     <Label htmlFor="email">Email</Label>
-                    <Input id="email" type="email" placeholder="user@gmail.com" required className="rounded-2xl p-5" />
+                    <Input {...login("email")} id="email" type="email" placeholder="user@gmail.com" required className="rounded-2xl p-5" />
                 </div>
                 <div className="grid gap-3">
                     <Label htmlFor="password">Password</Label>
-                    <Input id="password" type="password" placeholder="******" required className="rounded-2xl p-5" />
+                    <Input {...login("password")} id="password" type="password" placeholder="******" required className="rounded-2xl p-5" />
                 </div>
                 <Button type="submit" className="m-auto px-7 bg-[#F7CE4D] text-black hover:bg-amber-200">
                     Login
