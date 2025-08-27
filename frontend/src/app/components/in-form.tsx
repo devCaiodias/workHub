@@ -7,6 +7,7 @@ import * as zod from "zod"
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
+import { setCookie } from "cookies-next";
 
 const SinginSchema = zod.object({
     email: zod.string().email("Invalid email address"),
@@ -31,17 +32,24 @@ export default function SinginForm() {
     })
 
     const onSubmit = async (data: zod.infer<typeof SinginSchema>) => {
-        try {
-            await axios.post("http://localhost:8080/auth/signin", data, {
-                withCredentials: true,
-            })
+        try {
+            // 1. Envie a requisição de login e obtenha a resposta
+            const response = await axios.post("http://localhost:8080/auth/signin", data, {
+                withCredentials: true,
+            })
 
-            reset()
-            router.push("/Project")
-        } catch (error) {
-            console.error("Error during sign in:", error);
-        }
-    }
+            // 2. Extraia o token da resposta
+            const { access_token } = response.data;
+
+            // 3. Armazene o token em um cookie
+            setCookie('access_token', access_token, { maxAge: 60 * 60 * 24 }); // O cookie expira em 1 dia
+
+            reset()
+            router.push("/Project")
+        } catch (error) {
+            console.error("Error during sign in:", error);
+        }
+    }
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} >
