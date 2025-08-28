@@ -44,6 +44,7 @@
 }
 
 :root {
+  --font-title: 'Acme', sans-serif;
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.129 0.042 264.695);
@@ -120,3 +121,10 @@
     @apply bg-background text-foreground;
   }
 }
+
+.acme-regular {
+  font-family: "Acme", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+

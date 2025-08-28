@@ -3,6 +3,10 @@ import axios from "axios"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { getCookie, deleteCookie } from "cookies-next"
+import Image from "next/image"
+import projectImg from "../../../public/project.jpg"
+import { Separator } from "@/components/ui/separator"
+import ProjectContainer from "../components/projectContainer"
 
 interface Project {
   id: string
@@ -55,10 +59,15 @@ export default function Project() {
   }
 
   return (
-    <div>
-      Project page
-
-      <button type="button" onClick={logout} className="cursor-pointer">Logout</button>
-    </div>
+    <>
+      <section className="h-[153px] bg-gray-200 flex items-start justify-items-start">
+      </section>
+      <Image src={projectImg} alt="project" className="object-cover mt-[-70px] ml-40 w-[226px] h-[226px]" />
+      <div className="flex justify-center flex-col px-5 py-11">
+        <h1 className="text-6xl ml-12">PROJECT</h1>
+        <Separator className="bg-black mb-10" />
+        <ProjectContainer />
+      </div>
+    </>
   )
 }
