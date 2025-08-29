@@ -13,7 +13,7 @@ export class ProjectService {
 
   async create(createProjectDto: CreateProjectDto, req: any) {
     const project = this.projectRepository.create({
-      ...createProjectDto, user: { id: req.sub.sub }
+      ...createProjectDto, user: { id: req.user.sub }
     })
 
     return await this.projectRepository.save(project)
