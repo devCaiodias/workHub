@@ -20,6 +20,17 @@ export class ProjectController {
     return this.projectService.findAll();
   }
 
+  @Get(':id')
+  @UseGuards(AuthGuard)
+  findId(@Param('id') id: number) {
+    return this.projectService.findId(id)
+  }
+
+  @Get(':id/task')
+  async findTasksByProjectId(@Param('id') id: number) {
+    return this.projectService.findTasks(id)
+  }
+
   @Patch('update/:id')
   @UseGuards(AuthGuard)
   update(@Param('id') id: number, @Body() updateProjectDto: UpdateProjectDto) {

@@ -13,7 +13,7 @@ export class CreateTaskDto {
     @IsString()
     @IsOptional()
     description?: string
-    
+
     @IsOptional()
     status?: TaskStatus
 
@@ -21,6 +21,5 @@ export class CreateTaskDto {
     @IsDate()
     dataVencimento?: Date;
 
-    @IsNumber()
     projectId: number
 }

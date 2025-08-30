@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import CreateProject from "./createProject";
 
 interface Project {
-  id: string
+  id: number
   name: string
   description: string
   imgUrl: string
@@ -41,11 +41,15 @@ export default function ProjectContainer() {
     fetchProject()
   }, [])
 
+  const handleProjectClick = (projectId: number) => {
+    router.push(`/Tasks/${projectId}`)
+  }
+
   return (
     <div className="flex justify-center">
       <section className="grid md:grid-cols-2 xl:grid-cols-3 lg:grid-cols-4  gap-5">
         {project.map((projects) => (
-          <div key={projects.id} className="bg-[#F0F0F0] cursor-pointer hover:bg-gray-300">
+          <div key={projects.id} className="bg-[#F0F0F0] cursor-pointer hover:bg-gray-300" onClick={() => handleProjectClick(projects.id)}>
             <Image src={`${projects.imgUrl}`} alt="One Project" width={375} height={238} className="object-cover w-[375px] h-[238px]" />
 
             <p className="p-2 font-title">{projects.name}</p>

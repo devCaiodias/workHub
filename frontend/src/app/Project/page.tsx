@@ -6,11 +6,12 @@ import Image from "next/image"
 import projectImg from "../../../public/project.jpg"
 import { Separator } from "@/components/ui/separator"
 import ProjectContainer from "../components/projectContainer"
+import { Button } from "../components/ui/button"
 
 export default function Project() {
   const router = useRouter()
 
-  const fetchProject = async () => {
+
     try {
       const token = getCookie('access_token')
       if (!token) {
@@ -21,12 +22,12 @@ export default function Project() {
       const headers = {
         'Authorization': `Bearer ${token}`
       }
-      await axios.get('http://localhost:8080/auth/validate', { headers, withCredentials: true })
+      axios.get('http://localhost:8080/auth/validate', { headers, withCredentials: true })
     } catch (error) {
       console.log(error)
       router.push('/Singin')
     }
-  }
+
 
   async function logout() {
     try {
@@ -45,7 +46,8 @@ export default function Project() {
 
   return (
     <>
-      <section className="h-[153px] bg-gray-200 flex items-start justify-items-start">
+      <section className="h-[153px] bg-gray-200 flex items-start justify-end">
+        <Button className="text-right m-6 bg-[#F0F0F0] hover:bg-gray-300 text-black p-6" onClick={logout}>Logout</Button>
       </section>
       <Image src={projectImg} alt="project" className="object-cover mt-[-70px] ml-40 w-[226px] h-[226px]" />
       <div className="flex justify-center flex-col px-32 py-11">

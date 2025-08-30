@@ -16,7 +16,7 @@ export class TaskService {
   ){
 
   }
-  
+
   async create(createTaskDto: CreateTaskDto): Promise<Task> {
     const project = await this.projectRepository.findOneBy({id: createTaskDto.projectId})
 
@@ -49,6 +49,10 @@ export class TaskService {
         }
       }
     })
+  }
+
+  async findId(id: number) {
+    return await this.taskRepository.findOne({where: {id}})
   }
 
   async update(id: number, data: Partial<Task>): Promise<Task> {

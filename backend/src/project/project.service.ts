@@ -2,12 +2,16 @@ import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { Project } from './entities/project.entity';
 import { Repository } from 'typeorm';
+import { Task } from 'src/task/entities/task.entity';
 
 @Injectable()
 export class ProjectService {
   constructor(
     @Inject('PROJECT_REPOSITORY')
     private projectRepository: Repository<Project>,
+
+    @Inject('TASK_REPOSITORY')
+   private taskRepository: Repository<Task>
   ) { }
 
 
@@ -41,6 +45,14 @@ export class ProjectService {
       }
     })
   }
+
+async findId(id: number) {
+  return await this.projectRepository.findOne({where: {id}})
+}
+
+async findTasks(projectId: number) {
+  return await this.taskRepository.find({where: {projeto: {id: projectId}}})
+}
 
   async update(id: number, data: Partial<Project>): Promise<Project> {
     const project = await this.projectRepository.findOne({ where: { id } })
