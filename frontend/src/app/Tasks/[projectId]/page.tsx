@@ -1,17 +1,11 @@
 'use client'
-
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { getCookie } from "cookies-next"
 import axios from "axios"
-
-interface Task {
-  id: number
-  title: string
-  description: string
-  status: 'PENDENTE' | 'EM_ANDAMENTO' | 'CONCLUIDA'
-  dataVencimento: Date | null
-}
+import Image from "next/image"
+import { Separator } from "@/components/ui/separator"
+import TaskContainer from "@/app/components/taskContainer"
 
 interface Project {
   id: number
@@ -23,11 +17,10 @@ interface Project {
 export default function Page({ params }: { params: { projectId: string } }) {
   const router = useRouter()
   const { projectId } = params
-  const [tasks, setTasks] = useState<Task[]>([])
-  const [project, setProject] = useState<Project | null>()
+  const [project, setProject] = useState<Project | null>(null)
 
   const fetchProject = async () => {
-     try {
+    try {
       const token = getCookie('access_token')
       if (!token) {
         router.push('/Singin')
@@ -46,93 +39,33 @@ export default function Page({ params }: { params: { projectId: string } }) {
     }
   }
 
-  const fetchTasks = async () => {
-    try {
-      const token = getCookie('access_token')
-      if (!token) {
-        router.push('/Singin')
-        return
-      }
 
-      const headers = {
-        'Authorization': `Bearer ${token}`
-      }
-
-      // garante que projectId vai como número
-      const response = await axios.get(
-        `http://localhost:8080/project/${Number(projectId)}/task`,
-        { headers }
-      )
-
-      console.log("ProjectId recebido:", projectId)
-      console.log("Tasks recebidas:", response.data)
-
-      setTasks(response.data)
-    } catch (error) {
-      console.error(error)
-      router.push('/Singin')
-    }
-  }
 
   useEffect(() => {
-    if (projectId) {
-      fetchTasks()
-    }
     fetchProject()
   }, [projectId])
 
   return (
-    <div className="p-8">
-      <h1 className="text-3xl font-bold mb-6 text-center">
-        {project ? `Tarefas do Projeto ${project.name}` : "Carregando..."}
-      </h1>
-
-      <div className="grid md:grid-cols-3 gap-5">
-        {/* Pendentes */}
-        <div className="bg-gray-100 p-4 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold mb-4 border-b-2 border-gray-300 pb-2">Pendentes</h2>
-          {tasks.filter(t => t.status === 'PENDENTE').length > 0 ? (
-            tasks.filter(t => t.status === 'PENDENTE').map(task => (
-              <div key={task.id} className="bg-white p-3 rounded-md shadow-sm mb-2">
-                <p className="font-medium">{task.title}</p>
-                <p className="text-sm text-gray-500">{task.description}</p>
-              </div>
-            ))
-          ) : (
-            <p className="text-gray-500">Nenhuma tarefa pendente.</p>
-          )}
-        </div>
-
-        {/* Em Andamento */}
-        <div className="bg-gray-100 p-4 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold mb-4 border-b-2 border-gray-300 pb-2">Em Andamento</h2>
-          {tasks.filter(t => t.status === 'EM_ANDAMENTO').length > 0 ? (
-            tasks.filter(t => t.status === 'EM_ANDAMENTO').map(task => (
-              <div key={task.id} className="bg-white p-3 rounded-md shadow-sm mb-2">
-                <p className="font-medium">{task.title}</p>
-                <p className="text-sm text-gray-500">{task.description}</p>
-              </div>
-            ))
-          ) : (
-            <p className="text-gray-500">Nenhuma tarefa em andamento.</p>
-          )}
-        </div>
-
-        {/* Concluídas */}
-        <div className="bg-gray-100 p-4 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold mb-4 border-b-2 border-gray-300 pb-2">Concluídas</h2>
-          {tasks.filter(t => t.status === 'CONCLUIDA').length > 0 ? (
-            tasks.filter(t => t.status === 'CONCLUIDA').map(task => (
-              <div key={task.id} className="bg-white p-3 rounded-md shadow-sm mb-2">
-                <p className="font-medium">{task.title}</p>
-                <p className="text-sm text-gray-500">{task.description}</p>
-              </div>
-            ))
-          ) : (
-            <p className="text-gray-500">Nenhuma tarefa concluída.</p>
-          )}
-        </div>
-      </div>
+    <div>
+      <section className="h-[153px] bg-gray-200 flex items-start justify-end">
+      </section>
+      {/* O bloco do projeto foi corrigido. */}
+      {project && (
+        <>
+          <Image
+            src={project.imgUrl}
+            alt="project"
+            width={226}
+            height={226}
+            className="object-cover mt-[-70px] ml-40 w-[226px] h-[226px]"
+          />
+          <div className="flex justify-center flex-col px-32 py-11">
+            <h1 className="text-6xl ml-12 text-center sm:text-left">{project.name}</h1>
+            <Separator className="bg-black mb-10" />
+          </div>
+          <TaskContainer projectId={projectId} />
+        </>
+      )}
     </div>
   )
 }
