@@ -1,0 +1,90 @@
+'use client'
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogDescription, DialogTitle, DialogFooter, DialogClose } from "@/components/ui/dialog";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { useState } from "react";
+import axios from "axios";
+import { getCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
+import { Select, SelectTrigger, SelectValue, SelectGroup, SelectContent, SelectItem } from "@/components/ui/select";
+
+export default function CreateTasks() {
+  const [title, setTitle] = useState('')
+  const [status, setStatus] = useState('')
+  const [dataVencimento, setDataVencimento] = useState('')
+  const [description, setDescription] = useState('')
+
+  const router = useRouter()
+
+  const handleCreateTask = async () => {
+    try {
+      const token = getCookie('access_token')
+      if (!token) {
+        router.push('/Signin')
+        return
+      }
+
+      const headers = { 'Authorization': `Bearer ${token}` }
+
+      await axios.post('http://localhost:8080/task/create', {
+        title,
+        description,
+        status,
+        dataVencimento
+      }, { headers })
+
+      setTitle('')
+      setDescription('')
+      setStatus('')
+      setDataVencimento('')
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  return (
+    <Dialog>
+      <form>
+        <DialogTrigger asChild className="flex m-auto mb-6">
+          <Button className="bg-[#F0F0F0] cursor-pointer hover:bg-gray-300" variant="outline">
+            + New Task
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
+              Create Task
+            </DialogTitle>
+            <DialogDescription className="scroll-m-20 text-xl font-semibold tracking-tight pl-5">
+              Fill in the details of your new task.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4">
+            <Input placeholder="Title" value={title} onChange={e => setTitle(e.target.value)} />
+            <Input placeholder="Description" value={description} onChange={e => setDescription(e.target.value)} />
+            <Select value={status} onValueChange={setStatus}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Status"/>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="PENDENTE">PENDENTE</SelectItem>
+                  <SelectItem value="EM_ANDAMENTO">EM ANDAMENTO</SelectItem>
+                  <SelectItem value="CONCLUIDA">CONCLUIDA</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+            <Input placeholder="Data de vencimento" type="date" value={dataVencimento} onChange={e => setDataVencimento(e.target.value)} />
+          </div>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="outline">Cancel</Button>
+            </DialogClose>
+            <Button type="button" onClick={handleCreateTask}>Create</Button>
+          </DialogFooter>
+        </DialogContent>
+      </form>
+    </Dialog>
+  )
+}

@@ -15,7 +15,7 @@ export class CreateTaskDto {
     description?: string
 
     @IsOptional()
-    status?: TaskStatus
+    status: TaskStatus
 
     @IsOptional()
     @IsDateString()

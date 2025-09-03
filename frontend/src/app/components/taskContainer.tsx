@@ -7,6 +7,7 @@ import axios from "axios";
 import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
 import TaskManagement from "./taskManagement";
+import CreateTasks from "./createTask";
 
 interface Project {
   id: number
@@ -57,10 +58,12 @@ export default function TaskContainer({ projectId }: { projectId: string }) {
             height={226}
             className="object-cover mt-[-70px] ml-40 w-[226px] h-[226px]"
           />
+
           <div className="flex justify-center flex-col px-32 py-11">
             <h1 className="text-6xl ml-12 text-center sm:text-left">{project.name}</h1>
-            <Separator className="bg-black mb-10" />
+            <Separator className="bg-black mb-6" />
           </div>
+          <CreateTasks />
           <TaskManagement projectId={projectId} />
         </>
       )}

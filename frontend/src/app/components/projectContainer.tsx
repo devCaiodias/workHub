@@ -53,6 +53,7 @@ export default function ProjectContainer() {
             <Image src={`${projects.imgUrl}`} alt="One Project" width={375} height={238} className="object-cover w-[375px] h-[238px]" />
 
             <p className="p-2 font-title">{projects.name}</p>
+            
           </div>
         ))}
 
