@@ -6,9 +6,10 @@ import { ProjectModule } from './project/project.module';
 import { TaskModule } from './task/task.module';
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
-  imports: [UsersModule, ProjectModule, TaskModule, DatabaseModule, AuthModule],
+  imports: [ ScheduleModule.forRoot(),UsersModule, ProjectModule, TaskModule, DatabaseModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })

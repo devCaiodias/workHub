@@ -1,9 +1,9 @@
 import { Inject, Injectable, NotAcceptableException, NotFoundException } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
-import { UpdateTaskDto } from './dto/update-task.dto';
-import { Repository } from 'typeorm';
+import { LessThan, Repository } from 'typeorm';
 import { Task } from './entities/task.entity';
 import { Project } from 'src/project/entities/project.entity';
+import { Cron, CronExpression } from "@nestjs/schedule";
 
 @Injectable()
 export class TaskService {
@@ -53,6 +53,14 @@ export class TaskService {
 
   async findId(id: number) {
     return await this.taskRepository.findOne({where: {id}})
+  }
+  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+  async removeExpiredTask() {
+    const now = new Date()
+    await this.taskRepository.delete({
+      dataVencimento: LessThan(now)
+    })
+    console.log("✅ Tarefas vencidas removidas!");
   }
 
   async update(id: number, data: Partial<Task>): Promise<Task> {

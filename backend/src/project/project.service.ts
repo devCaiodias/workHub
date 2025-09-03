@@ -3,6 +3,7 @@ import { CreateProjectDto } from './dto/create-project.dto';
 import { Project } from './entities/project.entity';
 import { Repository } from 'typeorm';
 import { Task } from 'src/task/entities/task.entity';
+import { MoreThan } from 'typeorm';
 
 @Injectable()
 export class ProjectService {
@@ -51,7 +52,7 @@ async findId(id: number) {
 }
 
 async findTasks(projectId: number) {
-  return await this.taskRepository.find({where: {projeto: {id: projectId}}})
+  return await this.taskRepository.find({where: {projeto: {id: projectId}, dataVencimento: MoreThan(new Date())}})
 }
 
   async update(id: number, data: Partial<Project>): Promise<Project> {
