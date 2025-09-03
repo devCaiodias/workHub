@@ -61,7 +61,7 @@ export default function TaskContainer({ projectId }: { projectId: string }) {
 
           <div className="flex justify-center flex-col px-32 py-11">
             <h1 className="text-6xl ml-12 text-center sm:text-left">{project.name}</h1>
-            <Separator className="bg-black mb-6" />
+            <Separator className="bg-black mb-2" />
           </div>
           <CreateTasks />
           <TaskManagement projectId={projectId} />

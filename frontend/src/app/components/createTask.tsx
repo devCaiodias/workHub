@@ -8,13 +8,15 @@ import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import { Select, SelectTrigger, SelectValue, SelectGroup, SelectContent, SelectItem } from "@/components/ui/select";
 
+
 export default function CreateTasks() {
+  const router = useRouter()
   const [title, setTitle] = useState('')
   const [status, setStatus] = useState('')
   const [dataVencimento, setDataVencimento] = useState('')
   const [description, setDescription] = useState('')
+  const [open, setOpen] = useState(false);
 
-  const router = useRouter()
 
   const handleCreateTask = async () => {
     try {
@@ -23,9 +25,7 @@ export default function CreateTasks() {
         router.push('/Signin')
         return
       }
-
       const headers = { 'Authorization': `Bearer ${token}` }
-
       await axios.post('http://localhost:8080/task/create', {
         title,
         description,
@@ -37,6 +37,7 @@ export default function CreateTasks() {
       setDescription('')
       setStatus('')
       setDataVencimento('')
+      setOpen(false)
 
     } catch (error) {
       console.log(error)
@@ -44,14 +45,14 @@ export default function CreateTasks() {
   }
 
   return (
-    <Dialog>
-      <form>
-        <DialogTrigger asChild className="flex m-auto mb-6">
-          <Button className="bg-[#F0F0F0] cursor-pointer hover:bg-gray-300" variant="outline">
-            + New Task
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild className="flex m-auto mb-6">
+        <Button className="bg-[#F0F0F0] cursor-pointer hover:bg-gray-300" variant="outline">
+          + New Task
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <form onSubmit={e => { e.preventDefault(); handleCreateTask(); }}>
           <DialogHeader>
             <DialogTitle className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
               Create Task
@@ -65,7 +66,7 @@ export default function CreateTasks() {
             <Input placeholder="Description" value={description} onChange={e => setDescription(e.target.value)} />
             <Select value={status} onValueChange={setStatus}>
               <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Status"/>
+                <SelectValue placeholder="Status" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
@@ -81,10 +82,10 @@ export default function CreateTasks() {
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>
-            <Button type="button" onClick={handleCreateTask}>Create</Button>
+            <Button type="submit">Create</Button>
           </DialogFooter>
-        </DialogContent>
-      </form>
+        </form>
+      </DialogContent>
     </Dialog>
   )
 }

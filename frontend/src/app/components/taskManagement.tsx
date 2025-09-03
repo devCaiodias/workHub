@@ -7,6 +7,8 @@ import { DndContext, useSensors, useSensor, PointerSensor, DragEndEvent } from "
 import { SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 import { useDroppable } from "@dnd-kit/core";
+import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogCancel, AlertDialogFooter } from "@/components/ui/alert-dialog"
+import { Button } from "@/components/ui/button"
 
 interface Task {
   id: number
@@ -22,6 +24,7 @@ interface TaskContainerProps {
 
 // Sub-componente para o cartão da tarefa
 const TaskCard = ({ task }: { task: Task }) => {
+  const router = useRouter()
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: `task-${task.id}` })
 
   const style = {
@@ -30,17 +33,55 @@ const TaskCard = ({ task }: { task: Task }) => {
     cursor: "grab"
   }
 
+
+  async function handleDeleteTask() {
+    const token = getCookie('access_token');
+    if (!token) {
+      console.error("Token de autenticação não encontrado.");
+      return;
+    }
+    const headers = {
+      'Authorization': `Bearer ${token}`
+    };
+    try {
+      await axios.delete(`http://localhost:8080/task/delete/${task.id}`, {headers})
+      console.log(`Task deletada com successo!!`)
+      router.refresh()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      {...listeners}
-      className="bg-[#D9D9D9] p-3 rounded-md shadow-sm mb-2 opacity-70"
-    >
-      <p className="font-medium">{task.title.toLocaleUpperCase()}</p>
-      <p className="text-sm text-gray-500 text-right mt-6">{task.dataVencimento}</p>
-    </div>
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <div
+          ref={setNodeRef}
+          style={style}
+          {...attributes}
+          {...listeners}
+          className="bg-[#D9D9D9] p-3 rounded-md shadow-sm mb-2 opacity-70"
+        >
+          <p className="font-medium">{task.title.toLocaleUpperCase()}</p>
+          <p className="text-sm text-gray-500 text-right mt-6">{task.dataVencimento}</p>
+        </div>
+      </AlertDialogTrigger>
+      <AlertDialogContent className="rounded-4xl opacity-95">
+        <AlertDialogHeader>
+          <AlertDialogTitle className="flex items-center justify-between mb-5">
+            {task.title.toLocaleUpperCase()}
+            <p className="text-[14px]">{task.status}</p></AlertDialogTitle>
+          <AlertDialogDescription className="text-black px-6 max-w-md p-4">
+            <p className="break-words">{task.description}</p>
+            <p className="text-sm text-gray-500 text-right mt-6">{task.dataVencimento}</p>
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Close</AlertDialogCancel>
+          <Button type="button" onClick={handleDeleteTask}>Delete</Button>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   )
 }
 
@@ -105,27 +146,27 @@ export default function TaskManagement({ projectId }: TaskContainerProps) {
     }
   }
 
- const handleDragEnd = async (event: DragEndEvent) => {
-  const { over, active } = event;
-  if (!over) return;
+  const handleDragEnd = async (event: DragEndEvent) => {
+    const { over, active } = event;
+    if (!over) return;
 
-  // se caiu em uma coluna
-  if (over.id.toString().startsWith("column-")) {
-    const destinationStatus = over.id.toString().replace("column-", "") as Task['status'];
-    const activeTaskId = Number(active.id.toString().replace("task-", ""));
-    const activeTask = tasks.find(t => t.id === activeTaskId);
-    if (!activeTask) return;
+    // se caiu em uma coluna
+    if (over.id.toString().startsWith("column-")) {
+      const destinationStatus = over.id.toString().replace("column-", "") as Task['status'];
+      const activeTaskId = Number(active.id.toString().replace("task-", ""));
+      const activeTask = tasks.find(t => t.id === activeTaskId);
+      if (!activeTask) return;
 
-    if (activeTask.status !== destinationStatus) {
-      const updatedTasks = tasks.map(task =>
-        task.id === activeTaskId ? { ...task, status: destinationStatus } : task
-      );
-      setTasks(updatedTasks);
+      if (activeTask.status !== destinationStatus) {
+        const updatedTasks = tasks.map(task =>
+          task.id === activeTaskId ? { ...task, status: destinationStatus } : task
+        );
+        setTasks(updatedTasks);
 
-      await updateTaskStatusInBackend(activeTask.id, destinationStatus);
+        await updateTaskStatusInBackend(activeTask.id, destinationStatus);
+      }
     }
-  }
-};
+  };
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } })
