@@ -6,6 +6,7 @@ import axios from "axios";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import CreateProject from "./createProject";
+import { Button } from "./ui/button";
 
 interface Project {
   id: number
@@ -41,6 +42,24 @@ export default function ProjectContainer() {
     fetchProject()
   }, [])
 
+  async function handleDeleteProject(projectId: number) {
+    const token = getCookie('access_token');
+    if (!token) {
+      console.error("Token de autenticação não encontrado.");
+      return;
+    }
+    const headers = {
+      'Authorization': `Bearer ${token}`
+    };
+    try {
+      await axios.delete(`http://localhost:8080/project/delete/${projectId}`, { headers })
+      console.log(`Task deletada com successo!!`)
+      fetchProject()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const handleProjectClick = (projectId: number) => {
     router.push(`/Tasks/${projectId}`)
   }
@@ -52,9 +71,16 @@ export default function ProjectContainer() {
           <div key={projects.id} className="bg-[#F0F0F0] cursor-pointer hover:bg-gray-300" onClick={() => handleProjectClick(projects.id)}>
             <Image src={`${projects.imgUrl}`} alt="One Project" width={375} height={238} className="object-cover w-[375px] h-[238px]" />
 
-            <p className="p-2 font-title">{projects.name}</p>
-            
+            <div className="flex items-center justify-between">
+              <p className="p-2 font-title">{projects.name}</p>
+              <Button className="cursor-pointer bg-gray-300 hover:bg-gray-400 text-black" variant="ghost" onClick={(e) => {
+          e.stopPropagation()
+          handleDeleteProject(projects.id);
+        }}>Delete</Button>
+
+            </div>
           </div>
+
         ))}
 
         <CreateProject />
