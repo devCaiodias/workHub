@@ -4,13 +4,9 @@ export class CreateProjectDto {
     id: number
 
     @IsString()
-    @Length(3)
+    @Length(2)
     name: string
 
-    @IsString()
-    @IsOptional()
-    description?: string
-    
     @IsString()
     @IsNotEmpty()
     imgUrl: string

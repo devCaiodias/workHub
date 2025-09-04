@@ -30,7 +30,6 @@ export class ProjectService {
       select: {
         id: true,
         name: true,
-        description: true,
         imgUrl: true,
         user: {
           id: true,

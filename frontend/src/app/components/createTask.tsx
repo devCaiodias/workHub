@@ -3,14 +3,16 @@ import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogDescription, 
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useState } from "react";
-import axios from "axios";
 import { getCookie } from "cookies-next";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Select, SelectTrigger, SelectValue, SelectGroup, SelectContent, SelectItem } from "@/components/ui/select";
+import axios from "axios";
 
 
 export default function CreateTasks() {
   const router = useRouter()
+  const params = useParams();
+  const projectId = params.projectId;
   const [title, setTitle] = useState('')
   const [status, setStatus] = useState('')
   const [dataVencimento, setDataVencimento] = useState('')
@@ -30,7 +32,8 @@ export default function CreateTasks() {
         title,
         description,
         status,
-        dataVencimento
+        dataVencimento,
+        projectId
       }, { headers })
 
       setTitle('')
@@ -38,6 +41,7 @@ export default function CreateTasks() {
       setStatus('')
       setDataVencimento('')
       setOpen(false)
+      window.location.reload()
 
     } catch (error) {
       console.log(error)
@@ -57,7 +61,7 @@ export default function CreateTasks() {
             <DialogTitle className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
               Create Task
             </DialogTitle>
-            <DialogDescription className="scroll-m-20 text-xl font-semibold tracking-tight pl-5">
+            <DialogDescription className="scroll-m-20 text-xl font-semibold tracking-tight pl-5 mb-5">
               Fill in the details of your new task.
             </DialogDescription>
           </DialogHeader>
@@ -78,7 +82,7 @@ export default function CreateTasks() {
             </Select>
             <Input placeholder="Data de vencimento" type="date" value={dataVencimento} onChange={e => setDataVencimento(e.target.value)} />
           </div>
-          <DialogFooter>
+          <DialogFooter className="mt-4">
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>

@@ -24,7 +24,6 @@ interface TaskContainerProps {
 
 // Sub-componente para o cartão da tarefa
 const TaskCard = ({ task }: { task: Task }) => {
-  const router = useRouter()
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: `task-${task.id}` })
 
   const style = {
@@ -44,9 +43,9 @@ const TaskCard = ({ task }: { task: Task }) => {
       'Authorization': `Bearer ${token}`
     };
     try {
-      await axios.delete(`http://localhost:8080/task/delete/${task.id}`, {headers})
+      await axios.delete(`http://localhost:8080/task/delete/${task.id}`, { headers })
       console.log(`Task deletada com successo!!`)
-      router.refresh()
+      window.location.reload()
     } catch (error) {
       console.log(error)
     }
@@ -106,6 +105,7 @@ const Column = ({ status, title, tasks }: { status: Task['status'], title: strin
   )
 }
 
+
 const updateTaskStatusInBackend = async (taskId: number, newStatus: Task['status']) => {
   const token = getCookie('access_token');
   if (!token) {
@@ -150,7 +150,6 @@ export default function TaskManagement({ projectId }: TaskContainerProps) {
     const { over, active } = event;
     if (!over) return;
 
-    // se caiu em uma coluna
     if (over.id.toString().startsWith("column-")) {
       const destinationStatus = over.id.toString().replace("column-", "") as Task['status'];
       const activeTaskId = Number(active.id.toString().replace("task-", ""));

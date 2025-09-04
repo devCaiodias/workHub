@@ -44,8 +44,7 @@ export class TaskService {
         description: true,
         status: true,
         projeto: {
-          name: true,
-          description: true
+          name: true
         }
       }
     })

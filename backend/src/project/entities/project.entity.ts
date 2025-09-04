@@ -11,9 +11,6 @@ export class Project {
     name: string
 
     @Column()
-    description?: string
-
-    @Column()
     imgUrl: string
 
     @CreateDateColumn()
