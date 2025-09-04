@@ -42,7 +42,7 @@ export default function CreateProject() {
   return (
     <Dialog>
             <DialogTrigger asChild>
-              <Button className="bg-[#F0F0F0] w-[375px] h-[58px] flex items-center justify-start pl-4 cursor-pointer hover:bg-gray-300" variant="outline">+ New Project</Button>
+              <Button className="bg-[#F0F0F0] w-[375px] sm:w-auto h-[58px] flex items-center justify-start pl-4 cursor-pointer hover:bg-gray-300" variant="outline">+ New Project</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
           <form onSubmit={e => { e.preventDefault(); handleCreateProject(); }}>

@@ -12,7 +12,7 @@ export class ProjectService {
     private projectRepository: Repository<Project>,
 
     @Inject('TASK_REPOSITORY')
-   private taskRepository: Repository<Task>
+    private taskRepository: Repository<Task>
   ) { }
 
 
@@ -26,7 +26,7 @@ export class ProjectService {
 
   async findAll() {
     return await this.projectRepository.find({
-      relations: ['tarefas','user'],
+      relations: ['tarefas', 'user'],
       select: {
         id: true,
         name: true,
@@ -46,13 +46,20 @@ export class ProjectService {
     })
   }
 
-async findId(id: number) {
-  return await this.projectRepository.findOne({where: {id}})
-}
+  async findId(id: number) {
+    return await this.projectRepository.findOne({ where: { id } })
+  }
 
-async findTasks(projectId: number) {
-  return await this.taskRepository.find({where: {projeto: {id: projectId}, dataVencimento: MoreThan(new Date())}})
-}
+  async findTasks(projectId: number) {
+    return await this.taskRepository.find({ where: { projeto: { id: projectId }, dataVencimento: MoreThan(new Date()) } })
+  }
+
+  async findByUser(userId: number) {
+    return this.projectRepository.find({
+      where: { user: { id: userId } },
+      relations: ['user']
+    });
+  }
 
   async update(id: number, data: Partial<Project>): Promise<Project> {
     const project = await this.projectRepository.findOne({ where: { id } })

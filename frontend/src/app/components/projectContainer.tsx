@@ -30,7 +30,7 @@ export default function ProjectContainer() {
       const headers = {
         'Authorization': `Bearer ${token}`
       }
-      const resp = await axios.get('http://localhost:8080/project/all', { headers })
+      const resp = await axios.get('http://localhost:8080/project/my-projects', { headers })
       setProject(resp.data)
 
     } catch (error) {
@@ -66,7 +66,7 @@ export default function ProjectContainer() {
 
   return (
     <div className="flex justify-center">
-      <section className="grid md:grid-cols-2 xl:grid-cols-3 lg:grid-cols-4  gap-5">
+      <section className="grid md:grid-cols-2 xl:grid-cols-3 lg:grid-cols-4  gap-5 ">
         {project.map((projects) => (
           <div key={projects.id} className="bg-[#F0F0F0] cursor-pointer hover:bg-gray-300" onClick={() => handleProjectClick(projects.id)}>
             <Image src={`${projects.imgUrl}`} alt="One Project" width={375} height={238} className="object-cover w-[375px] h-[238px]" />
