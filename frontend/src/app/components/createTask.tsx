@@ -7,6 +7,7 @@ import { getCookie } from "cookies-next";
 import { useParams, useRouter } from "next/navigation";
 import { Select, SelectTrigger, SelectValue, SelectGroup, SelectContent, SelectItem } from "@/components/ui/select";
 import axios from "axios";
+import { Label } from "./ui/label";
 
 
 export default function CreateTasks() {
@@ -80,6 +81,7 @@ export default function CreateTasks() {
                 </SelectGroup>
               </SelectContent>
             </Select>
+            <Label>Due date</Label>
             <Input placeholder="Data de vencimento" type="date" value={dataVencimento} onChange={e => setDataVencimento(e.target.value)} />
           </div>
           <DialogFooter className="mt-4">
