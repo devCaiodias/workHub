@@ -3,14 +3,14 @@ import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeor
 @Entity()
 export class RevokedToken {
   @PrimaryGeneratedColumn()
-  id: number
+  id!: number
 
   @Column({ unique: true })
-  token: string
+  token!: string
 
   @CreateDateColumn()
-  createdAt: Date
+  createdAt!: Date
 
   @Column({ type: 'timestamptz' })
-  expiresAt: Date
+  expiresAt!: Date
 }

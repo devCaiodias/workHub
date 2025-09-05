@@ -8,18 +8,18 @@ export enum TaskStatus {
 
 export class CreateTaskDto {
     @IsString()
-    title: string
+    title!: string
 
     @IsString()
     @IsOptional()
     description?: string
 
     @IsOptional()
-    status: TaskStatus
+    status!: TaskStatus
 
     @IsOptional()
     @IsDateString()
-    dataVencimento: Date;
+    dataVencimento!: Date;
 
-    projectId: number
+    projectId!: number
 }

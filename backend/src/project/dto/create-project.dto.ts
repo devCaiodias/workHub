@@ -1,13 +1,13 @@
 import { IsNotEmpty, IsOptional, IsString, Length } from "class-validator"
 
 export class CreateProjectDto {
-    id: number
+    id!: number
 
     @IsString()
     @Length(2)
-    name: string
+    name!: string
 
     @IsString()
     @IsNotEmpty()
-    imgUrl: string
+    imgUrl!: string
 }

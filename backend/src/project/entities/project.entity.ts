@@ -5,23 +5,23 @@ import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGenerate
 @Entity()
 export class Project {
     @PrimaryGeneratedColumn()
-    id: number
+    id!: number
 
     @Column()
-    name: string
+    name!: string
 
     @Column()
-    imgUrl: string
+    imgUrl!: string
 
     @CreateDateColumn()
-    dateCreate: Date
+    dateCreate!: Date
 
     @UpdateDateColumn()
-    dateUpdate: Date
+    dateUpdate!: Date
 
     @OneToMany(() => Task, (task) => task.projeto, { cascade: true })
-    tarefas: Task[];
+    tarefas!: Task[];
 
     @ManyToOne(() => User, (user) => user.projetos, { onDelete: 'CASCADE' })
-    user: User;
+    user!: User;
 }

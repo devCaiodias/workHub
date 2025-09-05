@@ -3,8 +3,8 @@ import { IsEmail, IsNotEmpty } from "class-validator"
 export class CreateAuthDto {
     @IsEmail()
     @IsNotEmpty()
-    email: string
+    email!: string
 
     @IsNotEmpty()
-    password: string
+    password!: string
 }

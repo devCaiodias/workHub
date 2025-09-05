@@ -10,10 +10,10 @@ export enum TaskStatus {
 @Entity()
 export class Task {
     @PrimaryGeneratedColumn()
-    id: number
+    id!: number
 
     @Column()
-    title: string
+    title!: string
 
     @Column({ nullable: true })
     description?: string
@@ -23,17 +23,17 @@ export class Task {
         enum: TaskStatus,
         default: TaskStatus.PENDENTE
     })
-    status?: TaskStatus
+    status?: TaskStatus = TaskStatus.PENDENTE
 
     @Column({ type: 'date', nullable: true })
-    dataVencimento?: Date;
+    dataVencimento?: Date = new Date();
 
     @CreateDateColumn()
-    dateCreate: Date;
+    dateCreate!: Date;
 
     @UpdateDateColumn()
-    dateUpdate: Date
+    dateUpdate!: Date
 
     @ManyToOne(() => Project, (project) => project.tarefas, { onDelete: 'CASCADE' })
-    projeto: Project;
+    projeto!: Project;
 }

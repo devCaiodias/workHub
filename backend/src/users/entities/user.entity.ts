@@ -4,18 +4,18 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 @Entity()
 export class User {
     @PrimaryGeneratedColumn()
-    id: number
+    id!: number
 
     @Column({ length: 500 })
-    fullname: string
+    fullname!: string
 
     @Column({ unique: true })
-    email: string
+    email!: string
 
     @Column()
-    password: string
+    password!: string
 
     @OneToMany(() => Project, (project) => project.user, { cascade: true })
-    projetos: Project[];
+    projetos!: Project[];
 
 }
