@@ -21,8 +21,7 @@ export default function SinginForm() {
   const {
     register: login,
     handleSubmit,
-    reset,
-    formState: { errors }
+    reset
   } = useForm<zod.infer<typeof SinginSchema>>({
     resolver: zodResolver(SinginSchema),
     defaultValues: {

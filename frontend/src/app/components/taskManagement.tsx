@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import { getCookie } from "cookies-next"
 import axios from "axios"
@@ -128,7 +128,7 @@ export default function TaskManagement({ projectId }: TaskContainerProps) {
   const [tasks, setTasks] = useState<Task[]>([])
   const [loading, setLoading] = useState(true)
 
-  const fetchTasks = async () => {
+  const fetchTasks = useCallback(async () => {
     try {
       const token = getCookie('access_token')
       if (!token) {
@@ -144,7 +144,7 @@ export default function TaskManagement({ projectId }: TaskContainerProps) {
     } finally {
       setLoading(false)
     }
-  }
+  }, [projectId, router])
 
   const handleDragEnd = async (event: DragEndEvent) => {
     const { over, active } = event;
@@ -171,7 +171,7 @@ export default function TaskManagement({ projectId }: TaskContainerProps) {
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } })
   )
 
-  useEffect(() => { if (projectId) fetchTasks() }, [projectId])
+  useEffect(() => { if (projectId) fetchTasks() }, [projectId, fetchTasks])
 
   if (loading) return (
     <div className="flex justify-center items-center h-full">

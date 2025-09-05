@@ -1,6 +1,6 @@
 'use client'
 import Image from "next/image";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import { getCookie } from "cookies-next";
@@ -19,7 +19,7 @@ export default function ProjectContainer() {
   const router = useRouter()
   const [project, setProject] = useState<Project[]>([])
 
-  const fetchProject = async () => {
+  const fetchProject = useCallback( async () => {
     try {
       const token = getCookie('access_token')
       if (!token) {
@@ -37,10 +37,11 @@ export default function ProjectContainer() {
       console.log(error)
       router.push('/Singin')
     }
-  }
+  }, [router])
+
   useEffect(() => {
     fetchProject()
-  }, [])
+  }, [fetchProject])
 
   async function handleDeleteProject(projectId: number) {
     const token = getCookie('access_token');

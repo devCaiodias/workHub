@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getCookie } from "cookies-next";
 import axios from "axios";
 import Image from "next/image";
@@ -20,7 +20,7 @@ export default function TaskContainer({ projectId }: { projectId: string }) {
   const router = useRouter()
   const [project, setProject] = useState<Project | null>(null)
 
-  const fetchProject = async () => {
+  const fetchProject = useCallback( async () => {
     try {
       const token = getCookie('access_token')
       if (!token) {
@@ -38,11 +38,11 @@ export default function TaskContainer({ projectId }: { projectId: string }) {
       console.log(error)
       router.push('/Singin')
     }
-  }
+  }, [projectId, router])
 
   useEffect(() => {
     fetchProject()
-  }, [projectId])
+  }, [fetchProject ,projectId])
 
   return (
     <div>
