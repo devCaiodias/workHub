@@ -1,4 +1,4 @@
-import { Project } from "src/project/entities/project.entity";
+import { Project } from "../../project/entities/project.entity";
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 export enum TaskStatus {

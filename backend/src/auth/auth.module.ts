@@ -1,12 +1,12 @@
 import { Module, forwardRef } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { DatabaseModule } from 'src/database/database.module';
+import { DatabaseModule } from '../database/database.module';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthGuard } from './auth.guard';
 import { revokedProviders } from './revoked.providers';
-import { userProviders } from 'src/users/user.providers';
-import { UsersModule } from 'src/users/users.module';
+import { userProviders } from '../users/user.providers';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [

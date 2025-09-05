@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ProjectService } from './project.service';
 import { ProjectController } from './project.controller';
-import { DatabaseModule } from 'src/database/database.module';
+import { DatabaseModule } from '../database/database.module';
 import { projectProviders } from './project.providers';
-import { AuthModule } from 'src/auth/auth.module'; // Importe o AuthModule
-import { TaskProviders } from 'src/task/task.providers';
+import { AuthModule } from '../auth/auth.module'; // Importe o AuthModule
+import { TaskProviders } from '../task/task.providers';
 
 @Module({
   imports: [

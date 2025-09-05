@@ -2,7 +2,7 @@ import { Inject, Injectable, NotAcceptableException, NotFoundException } from '@
 import { CreateTaskDto } from './dto/create-task.dto';
 import { LessThan, Repository } from 'typeorm';
 import { Task } from './entities/task.entity';
-import { Project } from 'src/project/entities/project.entity';
+import { Project } from '../project/entities/project.entity';
 import { Cron, CronExpression } from "@nestjs/schedule";
 
 @Injectable()

@@ -1,9 +1,9 @@
 import { DataSource } from 'typeorm';
-import { User } from 'src/users/entities/user.entity';
-import { Project } from 'src/project/entities/project.entity';
-import { Task } from 'src/task/entities/task.entity';
+import { User } from '../users/entities/user.entity';
+import { Project } from '../project/entities/project.entity';
+import { Task } from '../task/entities/task.entity';
 import * as dotenv from 'dotenv'
-import { RevokedToken } from 'src/auth/revoked-token.entity';
+import { RevokedToken } from '../auth/revoked-token.entity';
 
 dotenv.config()
 

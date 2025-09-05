@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Request, Param, Delete, UseGuards, 
 import { ProjectService } from './project.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('project')
 export class ProjectController {
@@ -26,7 +26,7 @@ export class ProjectController {
     const userId = req.user.sub;
     return this.projectService.findByUser(userId);
   }
-  
+
   @Get(':id')
   @UseGuards(AuthGuard)
   findId(@Param('id') id: number) {
