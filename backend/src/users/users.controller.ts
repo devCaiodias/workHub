@@ -1,8 +1,8 @@
 import { Controller, Post, Body, Get, Param, ParseIntPipe, UseGuards, Patch, Delete} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { AuthGuard } from 'src/auth/auth.guard';
-import { UpdateAuthDto } from 'src/auth/dto/update-auth.dto';
+import { AuthGuard } from '../auth/auth.guard';
+import { UpdateAuthDto } from '../auth/dto/update-auth.dto';
 
 @Controller('users')
 export class UsersController {
@@ -31,5 +31,5 @@ export class UsersController {
     return this.usersService.remove(id)
   }
 
-  
+
 }
