@@ -5,8 +5,13 @@ import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {cors: true});
 
+  const allowedOrigins = [
+  'http://localhost:3000',
+  'https://work-hub-sigma.vercel.app',
+];
+
   app.enableCors({
-    origin: 'https://work-hub-sigma.vercel.app',
+    origin: allowedOrigins,
     credentials: true,
   })
 
