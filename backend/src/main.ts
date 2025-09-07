@@ -6,7 +6,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {cors: true});
 
   app.enableCors({
-    origin: 'https://workhub-ns8j.onrender.com',
+    origin: 'https://work-hub-sigma.vercel.app/',
     credentials: true,
   })
 
