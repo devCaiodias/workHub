@@ -25,7 +25,7 @@ export default function CreateProject() {
       const headers = {
         'Authorization': `Bearer ${token}`
       }
-      await axios.post('http://localhost:8080/project/create', {
+      await axios.post('https://workhub-ns8j.onrender.com/project/create', {
         name,
         description,
         imgUrl

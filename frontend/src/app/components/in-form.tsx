@@ -33,7 +33,7 @@ export default function SinginForm() {
   const onSubmit = async (data: zod.infer<typeof SinginSchema>) => {
     try {
       // 1. Envie a requisição de login e obtenha a resposta
-      const response = await axios.post("http://localhost:8080/auth/signin", data, {
+      const response = await axios.post("https://workhub-ns8j.onrender.com/auth/signin", data, {
         withCredentials: true,
       })
 

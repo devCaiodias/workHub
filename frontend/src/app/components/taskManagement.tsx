@@ -43,7 +43,7 @@ const TaskCard = ({ task }: { task: Task }) => {
       'Authorization': `Bearer ${token}`
     };
     try {
-      await axios.delete(`http://localhost:8080/task/delete/${task.id}`, { headers })
+      await axios.delete(`https://workhub-ns8j.onrender.com/task/delete/${task.id}`, { headers })
       console.log(`Task deletada com successo!!`)
       window.location.reload()
     } catch (error) {
@@ -116,7 +116,7 @@ const updateTaskStatusInBackend = async (taskId: number, newStatus: Task['status
     'Authorization': `Bearer ${token}`
   };
   try {
-    await axios.patch(`http://localhost:8080/task/update/${taskId}`, { status: newStatus }, { headers });
+    await axios.patch(`https://workhub-ns8j.onrender.com/task/update/${taskId}`, { status: newStatus }, { headers });
     console.log(`Status da tarefa ${taskId} atualizado para ${newStatus}`)
   } catch (error) {
     console.error("Erro ao atualizar o status da tarefa:", error)
@@ -136,7 +136,7 @@ export default function TaskManagement({ projectId }: TaskContainerProps) {
         return
       }
       const headers = { 'Authorization': `Bearer ${token}` }
-      const response = await axios.get(`http://localhost:8080/project/${Number(projectId)}/task`, { headers })
+      const response = await axios.get(`https://workhub-ns8j.onrender.com/project/${Number(projectId)}/task`, { headers })
       setTasks(response.data)
     } catch (error) {
       console.error(error)
@@ -172,12 +172,6 @@ export default function TaskManagement({ projectId }: TaskContainerProps) {
   )
 
   useEffect(() => { if (projectId) fetchTasks() }, [projectId, fetchTasks])
-
-  if (loading) return (
-    <div className="flex justify-center items-center h-full">
-      <p>A carregar tarefas...</p>
-    </div>
-  )
 
   const pendingTasks = tasks.filter(t => t.status === 'PENDENTE')
   const inProgressTasks = tasks.filter(t => t.status === 'EM_ANDAMENTO')

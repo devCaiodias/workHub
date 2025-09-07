@@ -31,7 +31,7 @@ export default function TaskContainer({ projectId }: { projectId: string }) {
       const headers = {
         'Authorization': `Bearer ${token}`
       }
-      const resp = await axios.get(`http://localhost:8080/project/${Number(projectId)}`, { headers })
+      const resp = await axios.get(`https://workhub-ns8j.onrender.com/project/${Number(projectId)}`, { headers })
       setProject(resp.data)
 
     } catch (error) {

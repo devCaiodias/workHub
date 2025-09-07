@@ -29,7 +29,7 @@ export default function CreateTasks() {
         return
       }
       const headers = { 'Authorization': `Bearer ${token}` }
-      await axios.post('http://localhost:8080/task/create', {
+      await axios.post('https://workhub-ns8j.onrender.com/task/create', {
         title,
         description,
         status,

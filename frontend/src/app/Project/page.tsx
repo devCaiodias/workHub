@@ -22,7 +22,7 @@ export default function Project() {
       const headers = {
         'Authorization': `Bearer ${token}`
       }
-      axios.get('http://localhost:8080/auth/validate', { headers, withCredentials: true })
+      axios.get('https://workhub-ns8j.onrender.com/auth/validate', { headers, withCredentials: true })
     } catch (error) {
       console.log(error)
       router.push('/Singin')
@@ -35,7 +35,7 @@ export default function Project() {
       const token = getCookie('token');
       if (token) {
         const headers = { 'Authorization': `Bearer ${token}` };
-        await axios.post('http://localhost:8080/auth/logout', {}, { headers });
+        await axios.post('https://workhub-ns8j.onrender.com/auth/logout', {}, { headers });
       }
       deleteCookie('access_token')
       router.push('/Singin');

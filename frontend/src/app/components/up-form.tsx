@@ -32,7 +32,7 @@ export default function SingupForm() {
 
     const onSubmit = async (data: zod.infer<typeof SignupSchema>) => {
         try {
-            await axios.post("http://localhost:8080/users/singup", data, {
+            await axios.post("https://workhub-ns8j.onrender.com/users/singup", data, {
                 withCredentials: true,
             })
             console.log("User registered successfully")

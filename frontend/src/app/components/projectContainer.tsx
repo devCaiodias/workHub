@@ -30,7 +30,7 @@ export default function ProjectContainer() {
       const headers = {
         'Authorization': `Bearer ${token}`
       }
-      const resp = await axios.get('http://localhost:8080/project/my-projects', { headers })
+      const resp = await axios.get('https://workhub-ns8j.onrender.com/project/my-projects', { headers, withCredentials: true },)
       setProject(resp.data)
 
     } catch (error) {
@@ -53,7 +53,7 @@ export default function ProjectContainer() {
       'Authorization': `Bearer ${token}`
     };
     try {
-      await axios.delete(`http://localhost:8080/project/delete/${projectId}`, { headers })
+      await axios.delete(`https://workhub-ns8j.onrender.com/project/delete/${projectId}`, { headers })
       console.log(`Task deletada com successo!!`)
       fetchProject()
     } catch (error) {
