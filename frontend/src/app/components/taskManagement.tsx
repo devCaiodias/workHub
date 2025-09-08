@@ -183,7 +183,7 @@ export default function TaskManagement({ projectId }: TaskContainerProps) {
         <div className="grid lg:grid-cols-3 gap-10 ">
           <Column status="PENDENTE" title="PENDENTE" tasks={pendingTasks} />
           <Column status="EM_ANDAMENTO" title="EM ANDAMENTO" tasks={inProgressTasks} />
-          <Column status="CONCLUIDA" title="CONCLUIDO" tasks={completedTasks} />
+          <Column status="CONCLUIDA" title="CONCLUIDA" tasks={completedTasks} />
         </div>
       </div>
     </DndContext>
